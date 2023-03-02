@@ -1,0 +1,8 @@
+.apivenv
+.vscode
+__pycache__/
+instance
+migrations
+data.db
+*pyc
+.DS_Store
