@@ -36,11 +36,12 @@ class PolicyViews(MethodView):
     @planblp.response(200, PlanSchema(many=True))
     def get(self): #GET all policies
         plans = PlansTable.query.all()
+        print(plans)
         return plans
 
 
 
-@planblp.route("/plan/<string:plan_id>")
+@planblp.route("/plan/<int:plan_id>")
 class Policy_Read_Update_Views(MethodView):
 
     @planblp.response(200, PlanSchema)
@@ -71,4 +72,4 @@ class Policy_Read_Update_Views(MethodView):
 
         db.session.delete(plan)
         db.session.commit()
-        return {"message":f"Policy with id {plan.id} is deleted"}
+        return {"message":f"Plan is deleted"}

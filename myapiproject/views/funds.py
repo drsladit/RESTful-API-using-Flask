@@ -40,7 +40,7 @@ class PolicyViews(MethodView):
 
 
 
-@fundblp.route("/fund/<string:fund_id>")
+@fundblp.route("/fund/<int:fund_id>")
 class Policy_Read_Update_Views(MethodView):
 
     @fundblp.response(200, FundSchema)
@@ -71,4 +71,4 @@ class Policy_Read_Update_Views(MethodView):
 
         db.session.delete(fund)
         db.session.commit()
-        return {"message":f"Policy with id {fund.id} is deleted"}
+        return {"message":f"Fund is deleted"}

@@ -1,3 +1,34 @@
+                # ---------Topics to cover'---------#
+#***Basic Concept of API Development using Flask***#
+    # 1. Database                  - Create DB with relationships using SQlite for learning. 
+    #                                   Connect to existing SQL DB or 
+    #                                   Connecting to eisting MongoDB
+    #                                   Establishing Multiple DB and using it.
+    # 2. Marshmellow Schema        - Create schema based on input data and database. 
+    #                                   JSON structure and datatypes, Serialisation and Deserialisation
+    # 3. Endpoints creation        - Designing URL, HTTP methods, HTTP status codes.
+    #                                   Understanding REST - https://restfulapi.net/
+    # 4. Blueprints & MethodView   - Seggregate View and apply MethodViews, argument and response to endpoints
+    # 5. JWT token                 - Register, Login and generate AT, Protect endpoints with access tokens,  
+    #                                   Admin handling, logout handing and Token refresh handling
+
+#***Other Required ***#
+    # 6. Git commands
+    # 7. Deploying as per tutorial and using Jenkins pipeline
+    # 8. Documentation using POSTMAN
+    # 9. Testing API using Pytest
+    #10. Interview Questions
+
+#*** Advanced concepts/Enhancements to API development***#
+    #11. Image handling
+    #12. Email handling
+    #13. Thrid party OAuth
+    #14. 
+
+
+
+
+
 
 
 """
