@@ -31,7 +31,7 @@ class PlainPlanSchema(Schema):
     SumInsured = fields.Float(required=True)
     class Meta:
         ordered = True
-        exclude = ["PlanId"]
+        #exclude = ["PlanId"]
 
 class PlainFundSchema(Schema):
 

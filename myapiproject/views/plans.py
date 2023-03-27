@@ -4,10 +4,10 @@ from myapiproject.models import PlansTable
 from myapiproject import db
 from sqlalchemy.exc import SQLAlchemyError
 from flask.views import MethodView
-from myapiproject.schema import PlanSchema
+from myapiproject.schema import PlainPlanSchema
 
 
-planblp = Blueprint("Plan", __name__)
+planblp = Blueprint("Plan", __name__, description="Operations on Plans")
 
 """
 Create - POST - 201   - '/policy' - Create one policy
@@ -19,13 +19,14 @@ Delete - DELETE - '/policy/<integer:1>' - Delete policy
 
 
 @planblp.route("/plan")
-class PolicyViews(MethodView):
+class Plan_Create_ViewAll(MethodView):
 
-    @planblp.arguments(PlanSchema)
-    @planblp.response(201, PlanSchema)
-    def post(self, plan_data): # CREATE POLICY
-        #policy_data = request.get_json()
-        print(plan_data)
+    @planblp.arguments(PlainPlanSchema)
+    @planblp.response(201, PlainPlanSchema)
+    def post(self, plan_data):
+        """
+        Create plan
+        """
 
         plan = PlansTable(**plan_data)
         db.session.add(plan)
@@ -33,8 +34,11 @@ class PolicyViews(MethodView):
 
         return plan
     
-    @planblp.response(200, PlanSchema(many=True))
-    def get(self): #GET all policies
+    @planblp.response(200, PlainPlanSchema(many=True))
+    def get(self):
+        """
+        GET all plans
+        """
         plans = PlansTable.query.all()
         print(plans)
         return plans
@@ -42,21 +46,25 @@ class PolicyViews(MethodView):
 
 
 @planblp.route("/plan/<int:plan_id>")
-class Policy_Read_Update_Views(MethodView):
+class Plan_Read_Update_delete_View(MethodView):
 
-    @planblp.response(200, PlanSchema)
-    def get(self, plan_id): # GET/Read one policy
+    @planblp.response(200, PlainPlanSchema)
+    def get(self, plan_id):
+        """
+        GET/Read one plan
+        """
         print(plan_id)
         plan = PlansTable.query.get_or_404(plan_id)
 
         return plan
     
 
-    @planblp.arguments(PlanSchema)
-    @planblp.response(200, PlanSchema)
-    def put(self, plan_data, plan_id): #Create policy
-        #policy_data = request.get_json()
-        #print(policy_data)
+    @planblp.arguments(PlainPlanSchema)
+    @planblp.response(200, PlainPlanSchema)
+    def put(self, plan_data, plan_id): 
+        """
+        Update plan
+        """
 
         plan = PlansTable.query.get_or_404(plan_id)
         
@@ -66,8 +74,10 @@ class Policy_Read_Update_Views(MethodView):
         return plan
 
 
-    def delete(self, plan_id): # GET/Read one policy
-        #print(policy_id)
+    def delete(self, plan_id):
+        """
+        Delete Plan
+        """
         plan = PlansTable.query.get_or_404(plan_id)
 
         db.session.delete(plan)

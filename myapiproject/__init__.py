@@ -37,12 +37,15 @@ from myapiproject.views.policy import policyblp
 from myapiproject.views.plans import planblp
 from myapiproject.views.funds import fundblp
 from myapiproject.views.user import userblp
+from myapiproject.views.completePolicy import completepolicyblp
 
 # Note: Here we register Bluprints to API but not to app(which we do for Web application)
+api.register_blueprint(completepolicyblp)
 api.register_blueprint(policyblp)
 api.register_blueprint(planblp)
 api.register_blueprint(fundblp)
 api.register_blueprint(userblp)
+
 
 # Below secret key helps us to identify access token sent by client is actually created by this app or not.
 # The app when sending the access token for each user. It will include below S K as well in access token
