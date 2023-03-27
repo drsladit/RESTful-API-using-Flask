@@ -2,12 +2,12 @@ from flask import request
 from flask_smorest import Blueprint, abort
 from myapiproject.models import UserTable
 from myapiproject import db
-from sqlalchemy.exc import SQLAlchemyError
+from myapiproject.blocklist import Blocklist
 from flask.views import MethodView
 from myapiproject.schema import UserSchema
 #from passlib import pbkdf2_sha256
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 
 
 userblp = Blueprint("User", __name__)
@@ -19,7 +19,7 @@ class UserRegister(MethodView):
     def post(self, user_data):
        
         if UserTable.query.filter(UserTable.username == user_data["username"]).first():
-            abort(409, "user with this username already exists") 
+            abort(409, "User with this username already exists") 
 
         user = UserTable(
             username = user_data['username'],
@@ -32,7 +32,7 @@ class UserRegister(MethodView):
         return {"message":"User created successfully"}, 200
 
 @userblp.route('/login')
-class UserRegister(MethodView):
+class UserLogin(MethodView):
 
     @userblp.arguments(UserSchema)
     def post(self, user_data):
@@ -45,6 +45,16 @@ class UserRegister(MethodView):
         
         abort(401, message="Invalid login")
 
+@userblp.route('/logout')
+class UserLogout(MethodView):
+
+    @jwt_required()
+    def post(self):
+        jti = get_jwt()['jti']
+        Blocklist.add(jti)
+        return {"message":"Loggedout Successfully"}
+
+        
 
 
 @userblp.route('/user/<int:user_id>')

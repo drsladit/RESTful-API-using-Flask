@@ -29,8 +29,6 @@
 
 
 
-
-
 """
 stores = {
     'f0c1874f96094dc99b3be3ea19da91c4': {
@@ -52,7 +50,7 @@ if "f0c1874f96094dc99b3be3ea19da91c4" in stores:
     print("Exists")
 del stores["f0c1874f96094dc99b3be3ea19da91c4"]
 print(stores)
- """
+
 
 
 policy = {
@@ -66,3 +64,21 @@ policy = {
     "FundIndicator"     : True}
 
 print(policy)
+ """
+import datetime
+from collections import OrderedDict
+
+s = OrderedDict([('ProductName', 'Life click 1P'), ('PolicyHolder', 'Aditya_1'), ('LifeInsured', 'Aditya_1'), 
+                 ('Nominee', 'Kavya'), ('PremiumAmount', 10000.0), ('CoverageStartDate', datetime.date(2023, 3, 20)), 
+                 ('CoverageEndDate', datetime.date(2063, 3, 20)), ('FundIndicator', True)])
+
+
+import decimal
+number = s['PremiumAmount']
+# Converting the above number into decimal  
+decimal_value = decimal.Decimal(number)  
+# rounding off  
+rounded_number = decimal_value.quantize(decimal.Decimal('0.00'))  
+print(rounded_number)
+s['PremiumAmount'] = rounded_number
+print(s)

@@ -4,7 +4,8 @@ from myapiproject.models import FundsTable
 from myapiproject import db
 from sqlalchemy.exc import SQLAlchemyError
 from flask.views import MethodView
-from myapiproject.schema import FundSchema
+from myapiproject.schema import PlainFundSchema, UpdateFundSchema
+from flask_jwt_extended import jwt_required
 
 
 fundblp = Blueprint("Fund", __name__)
@@ -19,12 +20,12 @@ Delete - DELETE - '/policy/<integer:1>' - Delete policy
 
 
 @fundblp.route("/fund")
-class PolicyViews(MethodView):
+class Fund_Create_ViewAll(MethodView):
 
-    @fundblp.arguments(FundSchema)
-    @fundblp.response(201, FundSchema)
-    def post(self, fund_data): # CREATE POLICY
-        #policy_data = request.get_json()
+    @jwt_required()
+    @fundblp.arguments(PlainFundSchema)
+    @fundblp.response(201, PlainFundSchema)
+    def post(self, fund_data): # Create fund
         print(fund_data)
 
         fund = FundsTable(**fund_data)
@@ -33,29 +34,28 @@ class PolicyViews(MethodView):
 
         return fund
     
-    @fundblp.response(200, FundSchema(many=True))
-    def get(self): #GET all policies
+    @jwt_required()
+    @fundblp.response(200, PlainFundSchema(many=True))
+    def get(self): #GET all funds
         funds = FundsTable.query.all()
         return funds
 
 
 
 @fundblp.route("/fund/<int:fund_id>")
-class Policy_Read_Update_Views(MethodView):
+class Fund_Read_Update_View(MethodView):
 
-    @fundblp.response(200, FundSchema)
-    def get(self, fund_id): # GET/Read one policy
+    @jwt_required()
+    @fundblp.response(200, PlainFundSchema)
+    def get(self, fund_id): # GET/Read one fund
         print(fund_id)
         fund = FundsTable.query.get_or_404(fund_id)
-
         return fund
-    
 
-    @fundblp.arguments(FundSchema)
-    @fundblp.response(200, FundSchema)
-    def put(self, fund_data, fund_id): #Create policy
-        #policy_data = request.get_json()
-        #print(policy_data)
+    @jwt_required()
+    @fundblp.arguments(UpdateFundSchema, description="Updates funds data. Policy ID is mandatory in JSON body")
+    @fundblp.response(200, PlainFundSchema)
+    def put(self, fund_data, fund_id): #Update Fund
 
         fund = FundsTable.query.get_or_404(fund_id)
         
@@ -64,11 +64,11 @@ class Policy_Read_Update_Views(MethodView):
         db.session.commit()
         return fund
 
-
-    def delete(self, fund_id): # GET/Read one policy
-        #print(policy_id)
+    @jwt_required()
+    def delete(self, fund_id): # Delete Fund
+        
         fund = FundsTable.query.get_or_404(fund_id)
 
         db.session.delete(fund)
         db.session.commit()
-        return {"message":f"Fund is deleted"}
+        return {"message": f"Fund is deleted"}
